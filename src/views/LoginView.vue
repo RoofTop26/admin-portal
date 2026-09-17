@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import apiClient from '../services/axios.js'
+import apiClient from '../api.js'
 
 const router = useRouter()
 const username = ref('')
@@ -11,19 +11,17 @@ const errorMessage = ref('')
 const handleLogin = async () => {
   try {
     errorMessage.value = ''
-    // Gọi API đăng nhập sang Spring Boot (Admin hoặc User)
     const response = await apiClient.post('/admin/login', {
       username: username.value,
       password: password.value
     })
     
-    // Lưu token vào localStorage
-    localStorage.setItem('token', response.data.token)
+        localStorage.setItem('token', response.data.token)
     localStorage.setItem('role', response.data.role)
+    localStorage.setItem('username', response.data.username)
     
     alert('Đăng nhập thành công!')
-    // Chuyển hướng về trang chủ hoặc dashboard
-    router.push('/')
+    router.push('/dashboard')
   } catch (error) {
     errorMessage.value = error.response?.data?.error || 'Đăng nhập thất bại, vui lòng kiểm tra lại tài khoản!'
   }
