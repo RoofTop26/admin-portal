@@ -5,6 +5,7 @@ import apiClient from '../api.js'
 const users = ref([])
 const loading = ref(true)
 const errorMessage = ref('')
+const deletingId = ref(null)
 
 const fetchUsers = async () => {
   loading.value = true
@@ -20,16 +21,15 @@ const fetchUsers = async () => {
 
 onMounted(fetchUsers)
 
-const deletingId = ref(null)
-
 const handleDelete = async (id) => {
   if (!confirm('Bạn có chắc muốn xóa?')) return
   deletingId.value = id
+  errorMessage.value = ''
   try {
     await apiClient.delete(`/admin/users/${id}`)
-    fetchUsers()
+    await fetchUsers()
   } catch (error) {
-    alert(error.response?.data?.error || 'Xóa thất bại')
+    errorMessage.value = error.response?.data?.error || 'Xóa user thất bại'
   } finally {
     deletingId.value = null
   }
@@ -47,10 +47,13 @@ const handleDelete = async (id) => {
       </router-link>
     </div>
 
+    <div v-if="errorMessage" style="color: red; margin-bottom: 15px; font-weight: 500;">
+      {{ errorMessage }}
+    </div>
+
     <div v-if="loading">Đang tải...</div>
 
     <div v-else>
-      <div v-if="errorMessage" style="color: red; margin-bottom: 15px;">{{ errorMessage }}</div>
       <table style="width: 100%; border-collapse: collapse;">
         <thead>
           <tr style="background-color: #f0f0f0; text-align: left;">

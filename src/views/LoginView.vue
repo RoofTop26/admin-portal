@@ -7,23 +7,26 @@ const router = useRouter()
 const username = ref('')
 const password = ref('')
 const errorMessage = ref('')
+const submitting = ref(false)
 
 const handleLogin = async () => {
+  submitting.value = true
+  errorMessage.value = ''
   try {
-    errorMessage.value = ''
     const response = await apiClient.post('/admin/login', {
       username: username.value,
       password: password.value
     })
     
-        localStorage.setItem('token', response.data.token)
+    localStorage.setItem('token', response.data.token)
     localStorage.setItem('role', response.data.role)
     localStorage.setItem('username', response.data.username)
     
-    alert('Đăng nhập thành công!')
     router.push('/dashboard')
   } catch (error) {
     errorMessage.value = error.response?.data?.error || 'Đăng nhập thất bại, vui lòng kiểm tra lại tài khoản!'
+  } finally {
+    submitting.value = false
   }
 }
 </script>
@@ -60,9 +63,10 @@ const handleLogin = async () => {
 
       <button 
         type="submit" 
+        :disabled="submitting"
         style="width: 100%; padding: 10px; background-color: #42b883; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;"
       >
-        Đăng nhập
+        {{ submitting ? 'Đang đăng nhập...' : 'Đăng nhập' }}
       </button>
     </form>
   </div>

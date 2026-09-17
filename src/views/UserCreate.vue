@@ -23,7 +23,6 @@ const handleSubmit = async () => {
       dob: dob.value,
       status: status.value
     })
-    alert('Tạo user thành công!')
     router.push('/users')
   } catch (error) {
     errorMessage.value = error.response?.data?.error || 'Tạo user thất bại'
