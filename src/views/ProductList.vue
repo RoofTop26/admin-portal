@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import apiClient from '../api.js'
+import { formatPrice } from '../utils/format.js'
 
 const products = ref([])
 const categories = ref([])
@@ -94,7 +95,7 @@ const handleDelete = async (id) => {
           <tr v-for="product in products" :key="product.id">
             <td style="padding: 10px; border: 1px solid #ddd;">{{ product.id }}</td>
             <td style="padding: 10px; border: 1px solid #ddd;">{{ product.name }}</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">{{ product.price }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ formatPrice(product.price) }}</td>
             <td style="padding: 10px; border: 1px solid #ddd;">{{ product.stock }}</td>
             <td style="padding: 10px; border: 1px solid #ddd;">{{ product.categoryName }}</td>
             <td style="padding: 10px; border: 1px solid #ddd;">

@@ -21,6 +21,7 @@ const handleLogout = () => {
         <router-link to="/users" style="color: white; text-decoration: none;">Quản lý User</router-link>
         <router-link to="/categories" style="color: white; text-decoration: none;">Danh mục</router-link>
         <router-link to="/products" style="color: white; text-decoration: none;">Sản phẩm</router-link>
+        <router-link to="/orders" style="color: white; text-decoration: none;">Đơn hàng</router-link>
       </div>
       <div style="display: flex; gap: 15px; align-items: center;">
         <span>{{ username }}</span>
